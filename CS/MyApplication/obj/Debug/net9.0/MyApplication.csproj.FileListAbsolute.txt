@@ -1,0 +1,14 @@
+C:\Users\controlc\MyDocuments\project_of_courses\CS_DotNet9_Angular19\CS\MyApplication\bin\Debug\net9.0\MyApplication.exe
+C:\Users\controlc\MyDocuments\project_of_courses\CS_DotNet9_Angular19\CS\MyApplication\bin\Debug\net9.0\MyApplication.deps.json
+C:\Users\controlc\MyDocuments\project_of_courses\CS_DotNet9_Angular19\CS\MyApplication\bin\Debug\net9.0\MyApplication.runtimeconfig.json
+C:\Users\controlc\MyDocuments\project_of_courses\CS_DotNet9_Angular19\CS\MyApplication\bin\Debug\net9.0\MyApplication.dll
+C:\Users\controlc\MyDocuments\project_of_courses\CS_DotNet9_Angular19\CS\MyApplication\bin\Debug\net9.0\MyApplication.pdb
+C:\Users\controlc\MyDocuments\project_of_courses\CS_DotNet9_Angular19\CS\MyApplication\obj\Debug\net9.0\MyApplication.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\controlc\MyDocuments\project_of_courses\CS_DotNet9_Angular19\CS\MyApplication\obj\Debug\net9.0\MyApplication.AssemblyInfoInputs.cache
+C:\Users\controlc\MyDocuments\project_of_courses\CS_DotNet9_Angular19\CS\MyApplication\obj\Debug\net9.0\MyApplication.AssemblyInfo.cs
+C:\Users\controlc\MyDocuments\project_of_courses\CS_DotNet9_Angular19\CS\MyApplication\obj\Debug\net9.0\MyApplication.csproj.CoreCompileInputs.cache
+C:\Users\controlc\MyDocuments\project_of_courses\CS_DotNet9_Angular19\CS\MyApplication\obj\Debug\net9.0\MyApplication.dll
+C:\Users\controlc\MyDocuments\project_of_courses\CS_DotNet9_Angular19\CS\MyApplication\obj\Debug\net9.0\refint\MyApplication.dll
+C:\Users\controlc\MyDocuments\project_of_courses\CS_DotNet9_Angular19\CS\MyApplication\obj\Debug\net9.0\MyApplication.pdb
+C:\Users\controlc\MyDocuments\project_of_courses\CS_DotNet9_Angular19\CS\MyApplication\obj\Debug\net9.0\MyApplication.genruntimeconfig.cache
+C:\Users\controlc\MyDocuments\project_of_courses\CS_DotNet9_Angular19\CS\MyApplication\obj\Debug\net9.0\ref\MyApplication.dll
