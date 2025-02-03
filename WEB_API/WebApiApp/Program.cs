@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
+using Microsoft.EntityFrameworkCore;
+using WebApiApp;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // ลบบรรทัดนี้ออก เพราะเราใช้ Swagger แทน
@@ -18,6 +21,13 @@ builder.Services.AddSwaggerGen(c =>
         Description = "A simple example ASP.NET Core Web API",
     });
 });
+
+//
+// เพิ่มการใช้งาน DbContext
+//
+builder.Services.AddDbContext<BookContext>(options =>
+    options.UseNpgsql("Server=localhost;Port=5432;Database=db_cs5day;User Id=postgres;Password=1234;")
+);
 
 //
 // authentication
