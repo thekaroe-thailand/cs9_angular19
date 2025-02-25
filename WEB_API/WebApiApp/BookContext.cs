@@ -6,7 +6,7 @@ public class BookContext : DbContext
 {
     public DbSet<BookModel> BookModel { get; set; }
     public DbSet<PublisherModel> PublisherModel { get; set; }
-    
+    public DbSet<ModelPerson> ModelPerson { get; set; }
     public BookContext(DbContextOptions<BookContext> options) : base(options){}
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

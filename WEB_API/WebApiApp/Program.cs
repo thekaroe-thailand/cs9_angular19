@@ -52,6 +52,17 @@ builder.Services.AddAuthentication(options => {
 });
 
 //
+// เพิ่มการใช้งาน Cors : Cross-Origin Resource Sharing
+//
+builder.Services.AddCors(options => {
+    options.AddPolicy("AllowAllOrigins", builder => { // สร้าง policy ชื่อ AllowAllOrigins
+        builder.WithOrigins("http://localhost:4200") // อนุญาตให้ localhost:4200 เข้าถึง
+            .AllowAnyMethod() // GET, POST, PUT, DELETE, PATCH, OPTIONS
+            .AllowAnyHeader(); // Content-Type, Accept, Authorization
+    });
+});
+
+//
 // เพิ่มการใช้งาน Controller
 //
 builder.Services.AddControllers();
@@ -76,8 +87,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+//
+// เพิ่มการใช้งาน Cors
+//
+app.UseCors("AllowAllOrigins"); // ต้องระบุชื่อ policy ที่กำหนดไว้
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 //
 // เพิ่มการใช้งาน Controller

@@ -12,10 +12,19 @@ using System.Security.Claims;
 // เพิ่มการใช้งาน Authorization
 using Microsoft.AspNetCore.Authorization;
 
+// เพิ่มการใช้งาน Entity Framework Core
+using Microsoft.EntityFrameworkCore;
+
 [ApiController]
 [Route("api/[controller]")] // localhost:5000/api/person
 public class PersonController : ControllerBase
 {
+    private readonly BookContext _context;
+
+    public PersonController(BookContext context) {
+        _context = context;
+    }
+    
     [HttpGet]
     public IActionResult HelloWorld()
     {
@@ -59,13 +68,18 @@ public class PersonController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    public IActionResult SignIn(ModelPerson person){
-        if (person.Username == "admin" && person.Password == "1234") {
+    public async Task<IActionResult> SignIn(ModelPerson person) {
+        ModelPerson? findPerson = await _context.ModelPerson.FirstOrDefaultAsync<ModelPerson>(p => 
+            p.Username == person.Username && 
+            p.Password == person.Password
+        );
+
+        if (findPerson != null) {
             var configuration = HttpContext.RequestServices.GetRequiredService<IConfiguration>();
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"] ?? ""));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[] {
-                new Claim(JwtRegisteredClaimNames.Sub, person.Username),
+                new Claim(JwtRegisteredClaimNames.Sub, findPerson.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
             var token = new JwtSecurityToken(
@@ -81,6 +95,22 @@ public class PersonController : ControllerBase
         } else {
             return Unauthorized("SignIn failed");
         }
+    }
+
+    [HttpGet("[action]")]
+    [Authorize]
+    public async Task<IActionResult> Info() {
+        string headers = Request.Headers["Authorization"]!;
+        string token = headers.ToString().Split(" ")[1];
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var jwtToken = tokenHandler.ReadJwtToken(token);
+        var claims = jwtToken.Claims;
+        // read name from sub
+        string id = claims.FirstOrDefault(c => c.Type == "sub")?.Value!;
+        ModelPerson? person = await _context.ModelPerson.FirstOrDefaultAsync(p => p.Id == int.Parse(id));
+
+        return Ok(new {name = person?.Name, level = "Admin"});
     }
 
     [HttpGet("[action]")]
@@ -106,5 +136,43 @@ public class PersonController : ControllerBase
         return Ok("File uploaded successfully");
     }
 
-}
+    [HttpGet("[action]")]
+    public async Task<IActionResult> PersonInfo() {
+        try {
+            string id = Service.GetIdFromToken(Request);
+            ModelPerson? person = await _context.ModelPerson.FirstOrDefaultAsync(p => p.Id == int.Parse(id));
+            
+            return Ok(new {
+                name = person?.Name,
+                username = person?.Username
+            });
+        } catch (Exception error) {
+            return StatusCode(500, error.Message);
+        }
+    }
 
+    [HttpPut("[action]")]
+    public async Task<IActionResult> ChangeProfile(ModelPerson person) {
+        try {
+            string id = Service.GetIdFromToken(Request);
+            ModelPerson? findPerson = await _context.ModelPerson.FindAsync(int.Parse(id));
+
+            if (findPerson == null) {
+                return NotFound("Person not found");
+            }
+
+            findPerson.Name = person.Name;
+            findPerson.Username = person.Username;
+
+            if (person.Password != "") {
+                findPerson.Password = person.Password;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new {message = "success"});
+        } catch (Exception error) {
+            return StatusCode(500, error.Message);
+        }
+    }
+}
