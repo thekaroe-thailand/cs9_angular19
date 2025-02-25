@@ -1,0 +1,15 @@
+@if (isOpen) {
+    <div class="modal-container">
+        <div class="modal-container-content">
+            <div class="modal-header">
+                <h3>{{ title }}</h3>
+                <button (click)="close()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-content">
+                <ng-content></ng-content>
+            </div>
+        </div>
+    </div>
+}

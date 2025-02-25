@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+.signin-container {
+    @apply flex flex-col gap-2 items-center justify-center h-screen;
+}
+
+.signin-container input {
+    @apply border border-gray-300 rounded-md p-2 bg-white;
+}
+
+.signin-container .title {
+    @apply text-2xl font-bold;
+}
+
+.signin-container .box {
+    @apply flex flex-col gap-2 bg-gray-100 p-5 rounded-md border border-gray-300;
+}
+
+button {
+    @apply bg-blue-500 text-white p-2 rounded-md px-5;
+}
+
+input {
+    @apply border border-gray-300 rounded-md p-2 bg-white w-full;
+}
+
+.sidebar {
+    @apply w-64 h-screen bg-gray-800 text-white;
+}
+
+.sidebar-header {
+    @apply p-4 bg-gray-950;
+}
+
+.content {
+    @apply p-3 w-full bg-gray-100;
+}
+
+.btn-signout {
+    @apply bg-red-500 text-white py-2 rounded-md px-3 cursor-pointer;
+}
+
+.btn-edit-profile {
+    @apply bg-blue-500 text-white py-2 rounded-md px-3 cursor-pointer;
+}
+
+.sidebar-menu {
+    @apply p-4;
+}
+
+.menu-item {
+    @apply flex items-center justify-start px-4 py-2 
+    hover:bg-gray-700 rounded-md cursor-pointer;
+}
+
+.menu-item i {
+    @apply w-[25px];
+}
+
+.title {
+    @apply text-2xl font-bold text-gray-700 pb-2;
+}
+
+/** Modal **/
+.modal-container {
+    @apply fixed top-0 left-0 w-full h-full bg-black items-center justify-center flex flex-col;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-container-content {
+    @apply bg-white rounded-xl w-1/3 shadow-xl;
+}
+
+.modal-header {
+    @apply flex items-center justify-between bg-gray-300 ps-4 pe-2 py-2 rounded-t-xl text-xl;
+}
+
+.modal-header button {
+    @apply bg-red-500 text-white py-2 rounded-lg px-3 cursor-pointer;
+}
+
+.modal-content {
+    @apply bg-white w-full p-4 rounded-md;
+}
+
+.modal-content > div {
+    @apply pb-3;
+}
+
+select {
+    @apply w-full border border-gray-300 rounded-md p-2 bg-white;
+}
+
+

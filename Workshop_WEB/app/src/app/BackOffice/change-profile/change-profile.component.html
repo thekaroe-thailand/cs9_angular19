@@ -1,0 +1,32 @@
+<h1 class="title">
+    <i class="fa-solid fa-user mr-2"></i>
+    แก้ไขข้อมูลส่วนตัว
+</h1>
+<div class="flex flex-col gap-3">
+    <div>
+        <div>ชื่อ</div>
+        <input [(ngModel)]="name" />
+    </div>
+
+    <div>
+        <div>username</div>
+        <input [(ngModel)]="username" />
+    </div>
+
+    <div>
+        <div>รหัสผ่าน <span class="text-red-500">(หากต้องการเปลี่ยน ให้กรอกรหัสผ่านใหม่)</span></div>
+        <input type="password" [(ngModel)]="password" />
+    </div>
+
+    <div>
+        <div>ยืนยันรหัสผ่านใหม่ <span class="text-red-500">(หากต้องการเปลี่ยน ให้กรอกรหัสผ่านใหม่)</span></div>
+        <input type="password" [(ngModel)]="confirmPassword" />
+    </div>
+
+    <div>
+        <button (click)="save()">
+            <i class="fa-solid fa-check mr-1"></i>
+            บันทึก
+        </button>
+    </div>
+</div>

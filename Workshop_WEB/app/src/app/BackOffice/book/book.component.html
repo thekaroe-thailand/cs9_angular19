@@ -1,0 +1,40 @@
+<div class="title">
+    <i class="fa-solid fa-book mr-2"></i>
+    หนังสือ
+</div>
+
+<div>
+    <button class="btn-primary" (click)="openModal()">
+        <i class="fa-solid fa-plus mr-2"></i>
+        เพิ่มรายการ
+    </button>
+</div>
+
+<app-modal [title]="'เพิ่มรายการ'" [isOpen]="isModalOpen" (closeModal)="closeModal()">
+    <div>
+        <div>ชื่อหนังสือ</div>
+        <input />
+    </div>
+
+    <div>
+        <div>isbn</div>
+        <input />
+    </div>
+
+    <div>
+        <div>ราคาจำหน่าย</div>
+        <input />
+    </div>
+
+    <div>
+        <div>สำนักพิมพ์</div>
+        <select></select>
+    </div>
+
+    <div>
+        <button>
+            <i class="fa-solid fa-check mr-2"></i>
+            เพิ่มรายการ
+        </button>
+    </div>
+</app-modal>
