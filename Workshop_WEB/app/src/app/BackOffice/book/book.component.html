@@ -8,31 +8,65 @@
         <i class="fa-solid fa-plus mr-2"></i>
         เพิ่มรายการ
     </button>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>isbn</th>
+                <th>ชื่อหนังสือ</th>
+                <th>ราคาจำหน่าย</th>
+                <th>สำนักพิมพ์</th>
+                <th width="110px"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (book of books; track book.id) {
+                <tr>
+                    <td>{{ book.isbn }}</td>
+                    <td>{{ book.name }}</td>
+                    <td>{{ book.price }}</td>
+                    <td>{{ book.publisher.name }}</td>
+                    <td>
+                        <button class="btn-primary" (click)="edit(book)">
+                            <i class="fa-solid fa-pencil"></i>
+                        </button>
+                        <button class="btn-danger" (click)="remove(book.id)">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 
 <app-modal [title]="'เพิ่มรายการ'" [isOpen]="isModalOpen" (closeModal)="closeModal()">
     <div>
         <div>ชื่อหนังสือ</div>
-        <input />
+        <input [(ngModel)]="name" />
     </div>
 
     <div>
         <div>isbn</div>
-        <input />
+        <input [(ngModel)]="isbn" />
     </div>
 
     <div>
         <div>ราคาจำหน่าย</div>
-        <input />
+        <input [(ngModel)]="price" />
     </div>
 
     <div>
         <div>สำนักพิมพ์</div>
-        <select></select>
+        <select [(ngModel)]="publisherId">
+            @for (publisher of publishers; track publisher.id) {
+                <option value="{{ publisher?.id }}">{{ publisher?.name }}</option>
+            }
+        </select>
     </div>
 
     <div>
-        <button>
+        <button (click)="save()">
             <i class="fa-solid fa-check mr-2"></i>
             เพิ่มรายการ
         </button>

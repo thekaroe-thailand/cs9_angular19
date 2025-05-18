@@ -19,6 +19,12 @@ export class SigninComponent {
   username: string = '';
   password: string = '';
 
+  ngOnInit() {
+    if (localStorage.getItem(config.tokenKey)) {
+      this.router.navigate(['/backoffice/dashboard']);
+    }
+  }
+
   signIn() {
     try {
       const payload = {

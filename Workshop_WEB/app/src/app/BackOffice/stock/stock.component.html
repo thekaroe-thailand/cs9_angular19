@@ -1,0 +1,85 @@
+<div class="title">
+    <i class="fa-solid fa-warehouse mr-2"></i>
+    สต้อกสินค้า
+</div>
+
+<div>
+    <div>
+        <button class="btn-primary" (click)="openModal()">
+            <i class="fa-solid fa-plus mr-2"></i>
+            เพิ่มการรับเข้าสต้อก
+        </button>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>วันที่</th>
+                    <th>หนังสือ</th>
+                    <th style="text-align: right;">จำนวน</th>
+                    <th style="text-align: right;">ราคาต่อหน่วย</th>
+                    <th>หมายเหตุ</th>
+                    <th width="110px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (stock of stocks; track stock.id) {
+                    <tr>
+                        <td>{{ dayjs(stock.createdDate).format('DD/MM/YYYY HH:mm') }}</td>
+                        <td>{{ stock.book.name }}</td>
+                        <td class="text-right">{{ stock.quantity }}</td>
+                        <td class="text-right">{{ stock.price }}</td>
+                        <td>{{ stock.remark }}</td>
+                        <td>
+                            <button class="btn-primary">
+                                <i class="fa-solid fa-pencil"></i>
+                            </button>
+                            <button class="btn-danger">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<app-modal title="เพิ่มการรับเข้าสต้อก" [isOpen]="isModalOpen" (close)="closeModal()">
+    <div>
+        <div for="date">วันที่</div>
+        <input type="date" [(ngModel)]="createdDate" />
+    </div>
+
+    <div>
+        <div>หนังสือ</div>
+        <select [(ngModel)]="bookId">
+            @for (book of books; track book.id) {
+                <option [value]="book.id">
+                    {{ book.name }}
+                </option>
+            }
+        </select>
+    </div>
+
+    <div>
+        <div>จำนวน</div>
+        <input type="number" [(ngModel)]="quantity" />
+    </div>
+
+    <div>
+        <div>ราคาต่อหน่วย</div>
+        <input type="number" [(ngModel)]="price" />
+    </div>
+
+    <div>
+        <div>หมายเหตุ</div>
+        <input [(ngModel)]="remark" />
+    </div>
+
+    <div>
+        <button class="btn-primary" (click)="save()">
+            <i class="fa-solid fa-check mr-2"></i>
+            บันทึก
+        </button>
+    </div>
+</app-modal>
