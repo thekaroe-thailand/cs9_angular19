@@ -26,7 +26,7 @@ builder.Services.AddSwaggerGen(c =>
 // เพิ่มการใช้งาน DbContext
 //
 builder.Services.AddDbContext<BookContext>(options =>
-    options.UseNpgsql("Server=localhost;Port=5432;Database=db_cs5day;User Id=postgres;Password=1234;")
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
 //

@@ -16,6 +16,7 @@ public class BookController : ControllerBase
     }
 
     [HttpGet]
+    [Route("[action]")]
     public async Task<ActionResult<IEnumerable<BookModel>>> List()
     {
         var results = await _context.BookModel.Select(item => new {
@@ -41,6 +42,7 @@ public class BookController : ControllerBase
     }
 
     [HttpPost]
+    [Route("[action]")]
     public async Task<ActionResult> Create(BookModel book)
     {
         _context.BookModel.Add(book);
@@ -49,23 +51,33 @@ public class BookController : ControllerBase
         return Ok();
     }
 
-    [HttpPut("{id}")]
+    [HttpPut()]
+    [Route("[action]/{id}")]
     public async Task<ActionResult> Update(int id, BookModel book)
     {
-        if (id != book.Id) return BadRequest();
-
-        _context.Entry(book).State = EntityState.Modified;
-
         try {
+            // update book
+            BookModel? findBook = await _context.BookModel.FindAsync(id);
+
+            if (findBook == null) return NotFound();
+
+            findBook.Name = book.Name;
+            findBook.Price = book.Price;
+            findBook.Isbn = book.Isbn;
+            findBook.PublisherId = book.PublisherId;
+
+            _context.BookModel.Update(findBook);
+
             await _context.SaveChangesAsync();
         } catch (Exception ex) {
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
 
-        return NoContent();
+        return Ok(new {message = "success"});
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete()]
+    [Route("[action]/{id}")]
     public async Task<ActionResult> Remove(int id)
     {
         var book = await _context.BookModel.FindAsync(id);
