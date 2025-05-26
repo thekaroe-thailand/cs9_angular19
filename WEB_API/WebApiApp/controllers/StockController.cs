@@ -39,4 +39,36 @@ public class StockController : ControllerBase
         await _context.SaveChangesAsync();
         return Ok(new {message = "success"});
     }
+
+    [HttpGet]
+    [Route("[action]")]
+    public async Task<ActionResult<IEnumerable<StockModel>>> SumPerProduct()
+    {
+        var results = await _context.StockModel.GroupBy(item => item.BookId)
+        .Select(group => new {
+            Id = group.Key,
+            Name = group.First().Book.Name,
+            Isbn = group.First().Book.Isbn,
+            Total = group.Sum(item => item.Quantity)
+        }).ToListAsync();
+
+        return Ok(results);
+    }
+
+    [HttpGet]
+    [Route("[action]/{productId}")]
+    public async Task<ActionResult<IEnumerable<StockModel>>> GetByProductId (int productId)
+    {
+        var results = await _context.StockModel.Where(item => item.BookId == productId)
+        .Select(item => new {
+            item.Id,
+            item.Quantity,
+            item.Price,
+            item.CreatedDate,
+            item.Remark,
+            item.Book,
+        }).ToListAsync();
+
+        return Ok(results);
+    }
 }
