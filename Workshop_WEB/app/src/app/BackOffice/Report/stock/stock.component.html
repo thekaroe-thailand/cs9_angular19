@@ -1,0 +1,59 @@
+<div class="title">
+    <i class="fa-solid fa-file-invoice mr-2"></i>
+    รายงาน สต้อกคงเหลือ
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>รหัสสินค้า</th>
+            <th>ชื่อสินค้า</th>
+            <th>จำนวนคงเหลือ</th>
+            <th width="340px"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (reportStock of reportStocks; track reportStock.id) {
+            <tr>
+                <td>{{ reportStock.isbn }}</td>
+                <td>{{ reportStock.name }}</td>
+                <td>{{ reportStock.total }}</td>
+                <td>
+                    <button class="btn-primary" (click)="openModal(reportStock.id)">
+                        <i class="fa-solid fa-plus"></i>
+                        ประวัติการรับเข้า
+                    </button>
+                    <button class="btn-primary">
+                        <i class="fa-solid fa-minus"></i>
+                        ประวัติการจ่ายออก
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<app-modal size="lg" title="ประวัติการรับเข้า" [isOpen]="isShowImportStock" (closeModal)="closeModal()">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>วันที่</th>
+                <th class="text-right">จำนวน</th>
+                <th class="text-right">ราคาต่อหน่วย</th>
+                <th class="text-right">ราคารวม</th>
+                <th>หมายเหตุ</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (stock of stocks; track stock.id) {
+                <tr>
+                    <td>{{ stock.createdDate }}</td>
+                    <td class="text-right">{{ stock.quantity }}</td>
+                    <td class="text-right">{{ stock.price.toLocaleString() }}</td>
+                    <td class="text-right">{{ (stock.quantity * stock.price).toLocaleString() }}</td>
+                    <td>{{ stock.remark }}</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</app-modal>

@@ -44,7 +44,7 @@
     </div>
 </div>
 
-<app-modal title="เพิ่มการรับเข้าสต้อก" [isOpen]="isModalOpen" (close)="closeModal()">
+<app-modal title="เพิ่มการรับเข้าสต้อก" [isOpen]="isModalOpen" (closeModal)="closeModal()">
     <div>
         <div for="date">วันที่</div>
         <input type="date" [(ngModel)]="createdDate" />

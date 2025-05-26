@@ -1,6 +1,6 @@
 @if (isOpen) {
     <div class="modal-container">
-        <div class="modal-container-content">
+        <div class="modal-container-content" [style.width]="sizeValue">
             <div class="modal-header">
                 <h3>{{ title }}</h3>
                 <button (click)="close()">

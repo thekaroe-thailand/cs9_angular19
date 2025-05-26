@@ -5,6 +5,7 @@ import { BackofficeLayoutComponent } from './BackOffice/backoffice-layout.compon
 import { ChangeProfileComponent } from './BackOffice/change-profile/change-profile.component';
 import { BookComponent } from './BackOffice/book/book.component';
 import { StockComponent } from './BackOffice/stock/stock.component';
+import { ReportStockComponent } from './BackOffice/Report/stock/stock.component';
 
 export const routes: Routes = [
     {
@@ -35,6 +36,15 @@ export const routes: Routes = [
             {
                 path: 'stock',
                 component: StockComponent
+            },
+            {
+                path: 'report',
+                children: [
+                    {
+                        path: 'stock',
+                        component: ReportStockComponent
+                    }
+                ]
             }
         ]
     }
