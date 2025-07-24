@@ -30,10 +30,10 @@
                         <td class="text-right">{{ stock.price }}</td>
                         <td>{{ stock.remark }}</td>
                         <td>
-                            <button class="btn-primary">
+                            <button class="btn-primary" (click)="update(stock)">
                                 <i class="fa-solid fa-pencil"></i>
                             </button>
-                            <button class="btn-danger">
+                            <button class="btn-danger" (click)="delete(stock.id)">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </td>

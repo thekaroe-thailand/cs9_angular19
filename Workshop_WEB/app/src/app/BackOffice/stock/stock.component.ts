@@ -86,7 +86,7 @@ export class StockComponent {
       if (this.id === 0) {
         this.http.post(`${config.apiUrl}/api/Stock/Create`, payload).subscribe((res: any) => { });
       } else {
-        this.http.put(`${config.apiUrl}/api/Stock/Update`, payload).subscribe((res: any) => { });
+        this.http.put(`${config.apiUrl}/api/Stock/Update/${this.id}`, payload).subscribe((res: any) => { });
       }
 
       Swal.fire({
@@ -97,6 +97,7 @@ export class StockComponent {
       });
 
       this.fetchData();
+      this.closeModal();
     } catch (err: any) {
       Swal.fire({
         icon: 'error',
@@ -104,5 +105,41 @@ export class StockComponent {
         text: err.message,
       });
     }
+  }
+
+  async delete(id: number) {
+    try {
+      const button = await Swal.fire({
+        icon: 'warning',
+        title: 'ยืนยันการลบ',
+        text: 'คุณต้องการลบข้อมูลนี้หรือไม่',
+        showCancelButton: true,
+        showConfirmButton: true
+      })
+
+      if (button.isConfirmed) {
+        const url = `${config.apiUrl}/api/Stock/Delete/${id}`;
+        this.http.delete(url).subscribe((res: any) => {
+          this.fetchData();
+        });
+      }
+    } catch (err: any) {
+      Swal.fire({
+        icon: 'error',
+        title: 'error',
+        text: err.message,
+      });
+    }
+  }
+
+  update(stock: StockInterface) {
+    this.id = stock.id;
+    this.createdDate = dayjs(stock.createdDate).format('YYYY-MM-DD');
+    this.bookId = stock.bookId;
+    this.quantity = stock.quantity;
+    this.price = stock.price;
+    this.remark = stock.remark;
+
+    this.openModal();
   }
 }

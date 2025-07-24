@@ -123,3 +123,6 @@ select {
     @apply flex items-center justify-center gap-1;
 }
 
+.btn-end-sale {
+    @apply bg-green-700 text-white py-2 rounded-md px-5 cursor-pointer;
+}

@@ -1,0 +1,102 @@
+<div class="title">
+    <i class="fa-solid fa-cart-shopping mr-2"></i>
+    ขายสินค้า
+</div>
+
+<div class="container">
+    <div class="flex justify-end">
+        <span class="bg-gray-800 text-green-400 px-5 py-3 text-4xl rounded-md">
+            {{ amount.toLocaleString() }}
+        </span>
+    </div>
+    <div class="flex mt-3 gap-2 items-center">
+        <span class="bg-gray-300 px-4 py-2">barcode/isbn</span>
+        <input class="w-full" [(ngModel)]="isbn" />
+        <div class="w-full flex gap-2">
+            <button (click)="save()">
+                <i class="fa-solid fa-plus mr-2"></i>
+                เพิ่มรายการ
+            </button>
+            <button class="btn-end-sale" (click)="openModal()">
+                <i class="fa-solid fa-check mr-2"></i>
+                จบการขาย
+            </button>
+        </div>
+    </div>
+
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ลำดับ</th>
+                    <th>รหัสสินค้า</th>
+                    <th>ชื่อสินค้า</th>
+                    <th>ราคา</th>
+                    <th>จำนวน</th>
+                    <th>รวม</th>
+                    <th class="w-[50px]"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of saleTemps; track item.id) {
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.isbn }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.price }}</td>
+                        <td>
+                            <button class="btn-primary" (click)="handleDownQty(item.id)">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <span class="bg-gray-300 px-4 py-2">{{ item.qty }}</span>
+                            <button class="btn-primary" (click)="handleUpQty(item.id)">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </td>
+                        <td>{{ item.total }}</td>
+                        <td>
+                            <div class="flex gap-2">
+                                <button class="btn-danger" (click)="delete(item.id)">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<app-modal [isOpen]="isModalOpen" (closeModal)="closeModal()" title="จบการขาย">
+    <div class="flex justify-between">
+        <div>ยอดรวมทั้งหมด</div>
+        <div>
+            <span class="bg-gray-300 px-4 py-2 font-bold text-2xl">
+                {{ amount.toLocaleString() }}
+            </span>
+        </div>
+    </div>
+    <div>
+        <div>รับเงิน</div>
+        <input type="number" [(ngModel)]="receiveAmount" />
+    </div>
+    <div class="flex justify-between">
+        <div>เงินทอน</div>
+        <div>
+            <span class="bg-green-300 px-4 py-2 font-bold text-2xl">
+                {{ (receiveAmount - amount).toLocaleString() }}
+            </span>
+        </div>
+    </div>
+    <div class="flex gap-2 mt-5">
+        <button class="btn-primary" (click)="payFull()">
+            <i class="fa-solid fa-check mr-2"></i>
+            จ่ายพอดี
+        </button>
+        <button class="btn-end-sale" (click)="endSale()">
+            <i class="fa-solid fa-check mr-2"></i>
+            จบการขาย
+        </button>
+    </div>
+</app-modal>
