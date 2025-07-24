@@ -71,4 +71,39 @@ public class StockController : ControllerBase
 
         return Ok(results);
     }
+
+    [HttpDelete]
+    [Route("[action]/{id}")]
+    public async Task<ActionResult> Delete(int id) {
+        var stock = await _context.StockModel.FindAsync(id);
+        if (stock == null) {
+            return NotFound("Stock not found");
+        }
+
+        _context.StockModel.Remove(stock);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    [HttpPut]
+    [Route("[action]/{id}")]
+    public async Task<ActionResult> Update(int id, StockModel stock) {
+        var stockForUpdate = await _context.StockModel.FindAsync(id);
+
+        if (stockForUpdate == null) {
+            return NotFound("Stock not found");
+        }
+
+        stockForUpdate.BookId = stock.BookId;
+        stockForUpdate.Quantity = stock.Quantity;
+        stockForUpdate.Price = stock.Price;
+        stockForUpdate.CreatedDate = stock.CreatedDate;
+        stockForUpdate.Remark = stock.Remark;
+
+        _context.StockModel.Update(stockForUpdate);
+        await _context.SaveChangesAsync();
+
+        return Ok();
+    }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WebApiApp;
@@ -11,9 +12,11 @@ using WebApiApp;
 namespace WebApiApp.Migrations
 {
     [DbContext(typeof(BookContext))]
-    partial class BookContextModelSnapshot : ModelSnapshot
+    [Migration("20250629151153_create table billSale and billSaleDetail")]
+    partial class createtablebillSaleandbillSaleDetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,64 +24,6 @@ namespace WebApiApp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("WebApiApp.Models.BillSaleDetailModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BillSaleId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Qty")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Total")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BillSaleId");
-
-                    b.HasIndex("BookId");
-
-                    b.ToTable("BillSaleDetailModel");
-                });
-
-            modelBuilder.Entity("WebApiApp.Models.BillSaleModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("ReceiveAmount")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BillSaleModel");
-                });
 
             modelBuilder.Entity("WebApiApp.Models.BookModel", b =>
                 {
@@ -216,25 +161,6 @@ namespace WebApiApp.Migrations
                     b.ToTable("StockModel");
                 });
 
-            modelBuilder.Entity("WebApiApp.Models.BillSaleDetailModel", b =>
-                {
-                    b.HasOne("WebApiApp.Models.BillSaleModel", "BillSale")
-                        .WithMany("BillSaleDetails")
-                        .HasForeignKey("BillSaleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebApiApp.Models.BookModel", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BillSale");
-
-                    b.Navigation("Book");
-                });
-
             modelBuilder.Entity("WebApiApp.Models.BookModel", b =>
                 {
                     b.HasOne("WebApiApp.Models.PublisherModel", "Publisher")
@@ -261,11 +187,6 @@ namespace WebApiApp.Migrations
                         .IsRequired();
 
                     b.Navigation("Book");
-                });
-
-            modelBuilder.Entity("WebApiApp.Models.BillSaleModel", b =>
-                {
-                    b.Navigation("BillSaleDetails");
                 });
 
             modelBuilder.Entity("WebApiApp.Models.BookModel", b =>
