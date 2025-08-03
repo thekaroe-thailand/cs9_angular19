@@ -8,12 +8,13 @@ public class BookContext : DbContext
     public DbSet<PublisherModel> PublisherModel { get; set; }
     public DbSet<ModelPerson> ModelPerson { get; set; }
     public DbSet<StockModel> StockModel { get; set; }
-    public DbSet<SaleTempModel> SaleTempModel { get; set; } 
+    public DbSet<SaleTempModel> SaleTempModel { get; set; }
 
     public DbSet<BillSaleModel> BillSaleModel { get; set; }
     public DbSet<BillSaleDetailModel> BillSaleDetailModel { get; set; }
+    public DbSet<CompanyModel> CompanyModel { get; set; }
 
-    public BookContext(DbContextOptions<BookContext> options) : base(options){}
+    public BookContext(DbContextOptions<BookContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
