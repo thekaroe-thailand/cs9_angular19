@@ -7,6 +7,7 @@ import { BookComponent } from './BackOffice/book/book.component';
 import { StockComponent } from './BackOffice/stock/stock.component';
 import { ReportStockComponent } from './BackOffice/Report/stock/stock.component';
 import { SaleComponent } from './BackOffice/sale/sale.component';
+import { BillSaleComponent } from './BackOffice/Report/bill-sale/bill-sale.component';
 
 export const routes: Routes = [
     {
@@ -44,6 +45,10 @@ export const routes: Routes = [
                     {
                         path: 'stock',
                         component: ReportStockComponent
+                    },
+                    {
+                        path: 'bill-sale',
+                        component: BillSaleComponent
                     }
                 ]
             },

@@ -1,0 +1,64 @@
+<div class="title">
+    <i class="fa-solid fa-cart-shopping mr-2"></i>
+    รายงานรายได้
+</div>
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>เลขบิล</th>
+                <th>วันที่ขาย</th>
+                <th>ราคารวม</th>
+                <th>สถานะ</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (bill of billSales; track bill.id) {
+                <tr>
+                    <td>{{ bill.id }}</td>
+                    <td>{{ dayjs(bill.createdAt).format('DD/MM/YYYY HH:mm') }}</td>
+                    <td>{{ bill.amount }}</td>
+                    <td>{{ bill.status }}</td>
+                    <td>
+                        <button class="btn-edit" (click)="openModal(bill)">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<app-modal [isOpen]="isModalOpen" (close)="closeModal()" title="รายละเอียดบิล">
+    <div class="modal-content">
+        <div class="flex justify-end">รหัสบิล {{ billSale.id }} วันที่ {{ billSale.createdAt }}
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>รหัสสินค้า</th>
+                    <th>ชื่อสินค้า</th>
+                    <th>ราคา</th>
+                    <th>จำนวน</th>
+                    <th>รวม</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (detail of billSaleDetails; track detail.id) {
+                    <tr>
+                        <td>{{ detail.id }}</td>
+                        <td>{{ detail.book?.isbn }}</td>
+                        <td>{{ detail.book?.name }}</td>
+                        <td>{{ detail.price }}</td>
+                        <td>{{ detail.qty }}</td>
+                        <td>{{ detail.price * detail.qty }}</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</app-modal>
