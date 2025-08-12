@@ -34,10 +34,19 @@ public class CompanyController : ControllerBase
     }
 
     [HttpPut]
-    [Route("[action]")]
-    public async Task<ActionResult> Update(CompanyModel company)
+    [Route("[action]/{id}")]
+    public async Task<ActionResult> Update(int id, CompanyModel companyModel)
     {
-        _context.CompanyModel.Update(company);
+        var company = await _context.CompanyModel.FirstOrDefaultAsync(c => c.Id == id);
+        if (company == null)
+        {
+            return NotFound();
+        }
+        company.Name = companyModel.Name;
+        company.Address = companyModel.Address;
+        company.Phone = companyModel.Phone;
+        company.Email = companyModel.Email;
+        company.TaxId = companyModel.TaxId;
         await _context.SaveChangesAsync();
         return Ok();
     }

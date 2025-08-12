@@ -21,10 +21,11 @@ public class PersonController : ControllerBase
 {
     private readonly BookContext _context;
 
-    public PersonController(BookContext context) {
+    public PersonController(BookContext context)
+    {
         _context = context;
     }
-    
+
     [HttpGet]
     public IActionResult HelloWorld()
     {
@@ -68,13 +69,15 @@ public class PersonController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    public async Task<IActionResult> SignIn(ModelPerson person) {
-        ModelPerson? findPerson = await _context.ModelPerson.FirstOrDefaultAsync<ModelPerson>(p => 
-            p.Username == person.Username && 
+    public async Task<IActionResult> SignIn(ModelPerson person)
+    {
+        ModelPerson? findPerson = await _context.ModelPerson.FirstOrDefaultAsync<ModelPerson>(p =>
+            p.Username == person.Username &&
             p.Password == person.Password
         );
 
-        if (findPerson != null) {
+        if (findPerson != null)
+        {
             var configuration = HttpContext.RequestServices.GetRequiredService<IConfiguration>();
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"] ?? ""));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -92,14 +95,17 @@ public class PersonController : ControllerBase
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenString = tokenHandler.WriteToken(token);
             return Ok(new { token = tokenString });
-        } else {
+        }
+        else
+        {
             return Unauthorized("SignIn failed");
         }
     }
 
     [HttpGet("[action]")]
     [Authorize]
-    public async Task<IActionResult> Info() {
+    public async Task<IActionResult> Info()
+    {
         string headers = Request.Headers["Authorization"]!;
         string token = headers.ToString().Split(" ")[1];
 
@@ -110,7 +116,7 @@ public class PersonController : ControllerBase
         string id = claims.FirstOrDefault(c => c.Type == "sub")?.Value!;
         ModelPerson? person = await _context.ModelPerson.FirstOrDefaultAsync(p => p.Id == int.Parse(id));
 
-        return Ok(new {name = person?.Name, level = "Admin"});
+        return Ok(new { name = person?.Name, level = "Admin" });
     }
 
     [HttpGet("[action]")]
@@ -122,14 +128,17 @@ public class PersonController : ControllerBase
 
     // upload file
     [HttpPost("[action]")]
-    public IActionResult UploadFile(IFormFile file) {
-        if (Directory.Exists("uploads") == false) {
+    public IActionResult UploadFile(IFormFile file)
+    {
+        if (Directory.Exists("uploads") == false)
+        {
             Directory.CreateDirectory("uploads");
         }
 
         var filePath = Path.Combine("uploads", file.FileName);
 
-        using (var stream = new FileStream(filePath, FileMode.Create)) {
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
             file.CopyTo(stream);
         }
 
@@ -137,41 +146,136 @@ public class PersonController : ControllerBase
     }
 
     [HttpGet("[action]")]
-    public async Task<IActionResult> PersonInfo() {
-        try {
+    public async Task<IActionResult> PersonInfo()
+    {
+        try
+        {
             string id = Service.GetIdFromToken(Request);
             ModelPerson? person = await _context.ModelPerson.FirstOrDefaultAsync(p => p.Id == int.Parse(id));
-            
-            return Ok(new {
+
+            return Ok(new
+            {
                 name = person?.Name,
                 username = person?.Username
             });
-        } catch (Exception error) {
+        }
+        catch (Exception error)
+        {
             return StatusCode(500, error.Message);
         }
     }
 
     [HttpPut("[action]")]
-    public async Task<IActionResult> ChangeProfile(ModelPerson person) {
-        try {
+    public async Task<IActionResult> ChangeProfile(ModelPerson person)
+    {
+        try
+        {
             string id = Service.GetIdFromToken(Request);
             ModelPerson? findPerson = await _context.ModelPerson.FindAsync(int.Parse(id));
 
-            if (findPerson == null) {
+            if (findPerson == null)
+            {
                 return NotFound("Person not found");
             }
 
             findPerson.Name = person.Name;
             findPerson.Username = person.Username;
 
-            if (person.Password != "") {
+            if (person.Password != "")
+            {
                 findPerson.Password = person.Password;
             }
 
             await _context.SaveChangesAsync();
 
-            return Ok(new {message = "success"});
-        } catch (Exception error) {
+            return Ok(new { message = "success" });
+        }
+        catch (Exception error)
+        {
+            return StatusCode(500, error.Message);
+        }
+    }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> List()
+    {
+        try
+        {
+            List<ModelPerson> persons = await _context.ModelPerson.ToListAsync();
+            return Ok(persons);
+        }
+        catch (Exception error)
+        {
+            return StatusCode(500, error.Message);
+        }
+    }
+
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> Create(ModelPerson person)
+    {
+        try
+        {
+            await _context.ModelPerson.AddAsync(person);
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "success" });
+        }
+        catch (Exception error)
+        {
+            return StatusCode(500, error.Message);
+        }
+    }
+
+    [HttpDelete("[action]/{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+            ModelPerson? findPerson = await _context.ModelPerson.FindAsync(id);
+
+            if (findPerson == null)
+            {
+                return NotFound("Person not found");
+            }
+
+            _context.ModelPerson.Remove(findPerson);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "success" });
+        }
+        catch (Exception error)
+        {
+            return StatusCode(500, error.Message);
+        }
+    }
+
+    [HttpPost("[action]/{id}")]
+    public async Task<IActionResult> Update(int id, ModelPerson person)
+    {
+        try
+        {
+            ModelPerson? findPerson = await _context.ModelPerson.FindAsync(id);
+
+            if (findPerson == null)
+            {
+                return NotFound("Person not found");
+            }
+
+            findPerson.Name = person.Name;
+            findPerson.Username = person.Username;
+            findPerson.Age = person.Age;
+
+            if (person.Password != "")
+            {
+                findPerson.Password = person.Password;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "success" });
+        }
+        catch (Exception error)
+        {
             return StatusCode(500, error.Message);
         }
     }
