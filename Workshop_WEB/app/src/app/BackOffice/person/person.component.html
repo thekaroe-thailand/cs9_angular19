@@ -1,0 +1,67 @@
+<p class="title">person works!</p>
+
+<div>
+    <button class="btn btn-primary" (click)="openModal()">
+        <i class="fa-solid fa-plus"></i>
+        เพิ่มผู้ใช้งาน
+    </button>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ชื่อ</th>
+                <th>ชื่อผู้ใช้งาน</th>
+                <th class="w-[110px]">จัดการ</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (person of persons; track person.id) {
+                <tr>
+                    <td>{{ person.name }}</td>
+                    <td>{{ person.username }}</td>
+                    <td>
+                        <button class="btn btn-primary" (click)="edit(person.id)">
+                            <i class="fa-solid fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger" (click)="delete(person.id)">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<app-modal [isOpen]="isModalOpen" (close)="closeModal()" [title]="'เพิ่มผู้ใช้งาน'">
+    <div class="modal-content">
+        <div>
+            <div class="form-group">
+                <label for="name">ชื่อ</label>
+                <input type="text" class="form-control" id="name" [(ngModel)]="name">
+            </div>
+
+            <div class="form-group">
+                <label for="age">อายุ</label>
+                <input type="text" class="form-control" id="age" [(ngModel)]="age">
+            </div>
+
+            <div class="form-group">
+                <label for="username">ชื่อผู้ใช้งาน</label>
+                <input type="text" class="form-control" id="username" [(ngModel)]="username">
+            </div>
+
+            <div class="form-group">
+                <label for="password">รหัสผ่าน</label>
+                <input type="password" class="form-control" id="password" [(ngModel)]="password">
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">ยืนยันรหัสผ่าน</label>
+                <input type="password" class="form-control" id="confirmPassword" [(ngModel)]="confirmPassword">
+            </div>
+
+            <button type="submit" class="btn btn-primary" (click)="save()">บันทึก</button>
+        </div>
+    </div>
+</app-modal>

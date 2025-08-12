@@ -8,6 +8,8 @@ import { StockComponent } from './BackOffice/stock/stock.component';
 import { ReportStockComponent } from './BackOffice/Report/stock/stock.component';
 import { SaleComponent } from './BackOffice/sale/sale.component';
 import { BillSaleComponent } from './BackOffice/Report/bill-sale/bill-sale.component';
+import { CompanyComponent } from './BackOffice/company/company.component';
+import { PersonComponent } from './BackOffice/person/person.component';
 
 export const routes: Routes = [
     {
@@ -55,6 +57,14 @@ export const routes: Routes = [
             {
                 path: 'sale',
                 component: SaleComponent
+            },
+            {
+                path: 'company',
+                component: CompanyComponent
+            },
+            {
+                path: 'person',
+                component: PersonComponent
             }
         ]
     }
