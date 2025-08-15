@@ -3,4 +3,6 @@ export interface ReportStockInterface {
     isbn: string;
     name: string;
     total: number;
+    sumIn: number;
+    sumSale: number;
 }

@@ -20,6 +20,8 @@ export class ReportStockComponent {
   reportStocks: ReportStockInterface[] = [];
   stocks: StockInterface[] = [];
   isShowImportStock: boolean = false;
+  isShowSale: boolean = false;
+  billSaleDetails: any[] = [];
 
   openModal(productId: number) {
     const url = config.apiUrl + '/api/stock/getByProductId/' + productId;
@@ -31,6 +33,18 @@ export class ReportStockComponent {
 
   closeModal() {
     this.isShowImportStock = false;
+  }
+
+  openModalSale(productId: number) {
+    const url = config.apiUrl + '/api/billSale/listBillSalesByProductId/' + productId;
+    this.http.get(url).subscribe((res: any) => {
+      this.billSaleDetails = res;
+      this.isShowSale = true;
+    });
+  }
+
+  closeModalSale() {
+    this.isShowSale = false;
   }
 
   ngOnInit() {
