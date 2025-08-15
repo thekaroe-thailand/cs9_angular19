@@ -1,0 +1,61 @@
+.chart-bar {
+  min-height: 2px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.chart-bar:hover {
+  transform: scaleY(1.05);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Tooltip arrow */
+.chart-bar .tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: #1f2937;
+}
+
+/* Smooth bar animation on load */
+@keyframes barGrow {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.chart-bar {
+  animation: barGrow 0.6s ease-out forwards;
+}
+
+/* Responsive chart */
+@media (max-width: 768px) {
+  .chart-container {
+    height: 200px;
+  }
+  
+  .chart-bar {
+    min-width: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chart-container {
+    height: 150px;
+  }
+  
+  .chart-bar {
+    min-width: 6px;
+  }
+  
+  .day-label {
+    font-size: 10px;
+  }
+}

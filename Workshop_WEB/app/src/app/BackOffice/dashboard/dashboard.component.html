@@ -1,1 +1,67 @@
-<p>dashboard works!</p>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">แดชบอร์ด</h1>
+        <div class="text-gray-600">
+            <form (ngSubmit)="loadDashboardData()"
+                class="flex gap-2 bg-white p-4 rounded-md border border-gray-200 shadow-md">
+                <div class="flex gap-2">
+                    <div>เดือน</div>
+                    <input type="number" name="month" id="month" [(ngModel)]="month" min="1" max="12" />
+                </div>
+                <div class="flex gap-2">
+                    <div>ปี</div>
+                    <input type="number" name="year" id="year" [(ngModel)]="year" />
+                </div>
+                <div>
+                    <button type="submit">
+                        <i class="fa-solid fa-magnifying-glass mr-2"></i>
+                        ค้นหา
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    @if (loading) {
+        <div class="flex justify-center items-center h-64">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        </div>
+    }
+
+    <!-- Error State -->
+    @if (error) {
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+            <strong class="font-bold">เกิดข้อผิดพลาด!</strong>
+            <span class="block sm:inline">ไม่สามารถโหลดข้อมูลแดชบอร์ดได้</span>
+        </div>
+    }
+
+    <!-- Chart Container -->
+    <div class="text-gray-500 text-xl font-bold mb-2">รวมยอดขายแต่ละวันของเดือน {{ month }} ปี {{ year }}</div>
+    <div
+        class="h-64 flex items-end justify-between space-x-1 px-4 bg-white border-gray-200 border rounded-md shadow-md">
+        @for (item of getChartData(); track item.day) {
+            <div class="flex flex-col items-center flex-1">
+                <!-- Bar -->
+                <div class="w-full bg-gradient-to-t from-blue-500 to-blue-300 rounded-t transition-all 
+                duration-300 hover:from-blue-600 hover:to-blue-400 cursor-pointer relative group"
+                    [style.height]="getMaxSales() > 0 ? (item.sales / getMaxSales() * 200) + 'px' : '2px'"
+                    [class.from-green-500]="item.sales > 0" [class.to-green-600]="item.sales > 0">
+                    <!-- Tooltip -->
+                    <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 
+                        bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 
+                        transition-opacity duration-200 whitespace-nowrap z-10">
+                        วันที่ {{ item.day }}: {{ item.sales | number }} บาท
+                    </div>
+                </div>
+
+                <!-- Day Label -->
+                <div class="text-xs text-gray-500 mt-2 font-medium">
+                    {{ item.day }}
+                </div>
+            </div>
+        }
+    </div>
+</div>
