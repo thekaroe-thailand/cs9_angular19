@@ -74,5 +74,28 @@ public class BillSaleController : ControllerBase
             return StatusCode(500, error.Message);
         }
     }
+
+    [HttpGet]
+    [Route("[action]/{productId}")]
+    public async Task<ActionResult<BillSaleModel>> ListBillSalesByProductId(int productId)
+    {
+        try
+        {
+            var billSaleDetails = await _context.BillSaleDetailModel
+            .Where(b => b.BookId == productId)
+            .Include(b => b.BillSale)
+            .Select(b => new
+            {
+                b.Qty,
+                b.BillSale.CreatedAt
+            })
+            .ToListAsync();
+            return Ok(billSaleDetails);
+        }
+        catch (Exception error)
+        {
+            return StatusCode(500, error.Message);
+        }
+    }
 }
 

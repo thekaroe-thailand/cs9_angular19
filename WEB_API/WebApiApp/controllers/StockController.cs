@@ -19,7 +19,8 @@ public class StockController : ControllerBase
     [Route("[action]")]
     public async Task<ActionResult<IEnumerable<StockModel>>> List()
     {
-        var results = await _context.StockModel.Select(item => new {
+        var results = await _context.StockModel.Select(item => new
+        {
             item.Id,
             item.BookId,
             item.Quantity,
@@ -37,30 +38,54 @@ public class StockController : ControllerBase
     {
         await _context.StockModel.AddAsync(stock);
         await _context.SaveChangesAsync();
-        return Ok(new {message = "success"});
+        return Ok(new { message = "success" });
     }
 
     [HttpGet]
     [Route("[action]")]
     public async Task<ActionResult<IEnumerable<StockModel>>> SumPerProduct()
     {
-        var results = await _context.StockModel.GroupBy(item => item.BookId)
-        .Select(group => new {
-            Id = group.Key,
-            Name = group.First().Book.Name,
-            Isbn = group.First().Book.Isbn,
-            Total = group.Sum(item => item.Quantity)
+        var books = await _context.BookModel.Select(item => new
+        {
+            item.Id,
+            item.Name,
+            item.Isbn
         }).ToListAsync();
+        var list = new List<object>();
 
-        return Ok(results);
+        foreach (var book in books)
+        {
+            // รับเข้าทั้งหมด
+            var sumIn = await _context.StockModel.Where(item => item.BookId == book.Id)
+            .SumAsync(item => item.Quantity);
+
+            // ขายออกทั้งหมด
+            var sumSale = await _context.BillSaleDetailModel.Where(item => item.BookId == book.Id)
+            .SumAsync(item => item.Qty);
+
+            var total = sumIn - sumSale;
+
+            list.Add(new
+            {
+                book.Id,
+                book.Name,
+                book.Isbn,
+                SumIn = sumIn,
+                SumSale = sumSale,
+                Total = total
+            });
+        }
+
+        return Ok(list);
     }
 
     [HttpGet]
     [Route("[action]/{productId}")]
-    public async Task<ActionResult<IEnumerable<StockModel>>> GetByProductId (int productId)
+    public async Task<ActionResult<IEnumerable<StockModel>>> GetByProductId(int productId)
     {
         var results = await _context.StockModel.Where(item => item.BookId == productId)
-        .Select(item => new {
+        .Select(item => new
+        {
             item.Id,
             item.Quantity,
             item.Price,
@@ -74,9 +99,11 @@ public class StockController : ControllerBase
 
     [HttpDelete]
     [Route("[action]/{id}")]
-    public async Task<ActionResult> Delete(int id) {
+    public async Task<ActionResult> Delete(int id)
+    {
         var stock = await _context.StockModel.FindAsync(id);
-        if (stock == null) {
+        if (stock == null)
+        {
             return NotFound("Stock not found");
         }
 
@@ -88,10 +115,12 @@ public class StockController : ControllerBase
 
     [HttpPut]
     [Route("[action]/{id}")]
-    public async Task<ActionResult> Update(int id, StockModel stock) {
+    public async Task<ActionResult> Update(int id, StockModel stock)
+    {
         var stockForUpdate = await _context.StockModel.FindAsync(id);
 
-        if (stockForUpdate == null) {
+        if (stockForUpdate == null)
+        {
             return NotFound("Stock not found");
         }
 
