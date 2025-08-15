@@ -44,7 +44,7 @@ public class BillSaleController : ControllerBase
         try
         {
             var totalBillSale = await _context.BillSaleModel.Where(b => b.CreatedAt.Month == month && b.CreatedAt.Year == year).CountAsync();
-            var totalBookSale = await _context.BillSaleDetailModel.CountAsync();
+            var totalBookSale = await _context.BookModel.CountAsync();
             var totalPublisher = await _context.PublisherModel.CountAsync();
             var sumBookInStock = await _context.StockModel.SumAsync(b => b.Quantity);
 
